@@ -1,0 +1,49 @@
+PAREMETERS: 
+
+pa_val1 TYPE i, 
+
+pa_sign TYPE c LENGTH i, 
+
+pa_val2 TYPE i. 
+
+DATA result TYPE P LENGTH 16 DECIMALS 2. 
+
+IF (pa_sign = '+' OR 
+
+     pa_sign = '-' OR 
+
+     pa_sign = '*' OR 
+
+     pa_sign = '/' AND pa_val2 <> 0 ). 
+
+     CASE pa_sign. 
+
+     WHEN '+'. 
+
+    result = pa_val1 + pa_val2. 
+
+     WHEN '-'. 
+
+    result = pa_val1 - pa_val2. 
+
+     WHEN '*'. 
+
+    result = pa_val1 * pa_val2. 
+
+     WHEN '/'. 
+
+     result = pa_val1 / pa_val2. 
+
+      ENDCASE. 
+
+      WRITE: 'Result = ' (res), result. 
+
+ELSEIF pa_sign = '/' AND pa_val2 = 0. 
+
+       WRITE 'No division by zero!' (dbz). 
+
+ESLSE. 
+
+        WRITE 'Invalid operator!' (iop). 
+
+ENDIF. 
