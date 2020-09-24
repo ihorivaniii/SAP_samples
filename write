@@ -27,4 +27,5 @@ ELSE.
 ENDIF. 
 # field sy-subrc it is filled by ABAP runtime system with the corresponding return code to indicate whether the statement could be executed successfully. The value zero means
 # that the statement was executed successfully.
- 
+# sy-mandt Logon Client, sy-uname Logon Name of the User, sy-langu Logon Language of the User, sy-datum Local Date of the ABAP System, sy-uzeit Local Time of the ABAP System,
+# sy-uzeit Local Time of the ABAP system, sy-tcode Current Transaction Code, sy-repid Name of the Current ABAP Program,  sy-index Loop Counter at DO and WHILE Loops
