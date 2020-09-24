@@ -20,20 +20,25 @@ IF (pa_sign = '+' OR
 
      WHEN '+'. 
 
-    result = pa_val1 + pa_val2. 
+          result = pa_val1 + pa_val2. 
 
      WHEN '-'. 
 
-    result = pa_val1 - pa_val2. 
+          result = pa_val1 - pa_val2. 
 
      WHEN '*'. 
 
-    result = pa_val1 * pa_val2. 
+          result = pa_val1 * pa_val2. 
 
      WHEN '/'. 
 
-     result = pa_val1 / pa_val2. 
-
+          result = pa_val1 / pa_val2. 
+     WHEN '%'.
+          PERFORM percentage
+          USING pa_val1
+                pa_val2
+          CHANGING
+                result.
       ENDCASE. 
 
       WRITE: 'Result = ' (res), result. 
@@ -47,3 +52,18 @@ ESLSE.
         WRITE 'Invalid operator!' (iop). 
 
 ENDIF. 
+
+
+*&-----------------------------------------------*
+*& From percentage
+*&-----------------------------------------------*
+FORM percentage USING pv_val1 TYPE i
+                      pv_val2 TYPE i
+                CHANGING cv_result TYPE type_result.
+   IF pv_val2 = 0.
+      cv_result = 0.
+      WRITE 'Error in percentage calculation' (epc).
+   ELSE.
+      cv_result = pv_val1 / pv_val2 * 100.
+   ENDIF.
+ENDFORM.
