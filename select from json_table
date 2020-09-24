@@ -1,0 +1,8 @@
+SELECT *
+	FROM JSON_TABLE(COMMUNITY.DATA, '$'
+	COLUMNS
+	(
+			LOCATION NVARCHAR(200) PATH '$.office',
+			NAME NVARCHAR(200) PATH '$.name'
+	)
+	) AS JT where NAME = 'Maria'
