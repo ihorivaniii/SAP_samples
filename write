@@ -1,0 +1,30 @@
+REPORT … 
+
+PARAMETERS pa_carr TYPE scarr-carrid. 
+
+DATA wa_scarr TYPE scarr. 
+
+SELECT SINGLE * FROM scarr 
+
+  INTO wa_scarr 
+
+  WHERE carrid = pa_carr. 
+
+IF  sy-subrc = 0. 
+
+   NEW-LINE. 
+
+   WRITE: wa_scarr-carrid, 
+
+   wa_scarr-carrname, 
+
+   wa_scarr-url. 
+
+ELSE. 
+
+   WRITE ‘Sorry, no data found!’. 
+
+ENDIF. 
+# field sy-subrc it is filled by ABAP runtime system with the corresponding return code to indicate whether the statement could be executed successfully. The value zero means
+# that the statement was executed successfully.
+ 
