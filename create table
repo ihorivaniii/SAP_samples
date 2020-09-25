@@ -1,0 +1,64 @@
+COLUMN TABLE COMMUNITY (
+     ID INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) NOT NULL ,
+	 DATA NCLOB MEMORY THRESHOLD 1000,
+	 PRIMARY KEY (ID)) 
+	 UNLOAD PRIORITY 5 AUTO MERGE 
+#Create the columnar table first by returning to the SAP Web IDE editor view and creating a file named DEVS.hdbtable in the db/src folder.
+#column table "DEVS"(Here is the content for this file.
+
+insert into DEVS
+  "DEVNAME" nvarchar(100) PRIMARY KEY,
+  "LEARNS_FROM" nvarchar(100),
+  "HINT_TEXT" nvarchar(1000),
+  "CITY" nvarchar(100),
+  "LON_LAT" nvarchar(200)
+)
+
+SELECT NAME, LEARNS_FROM, HINT, OFFICE, GEOLOCATION
+	FROM JSON_TABLE(COMMUNITY.DATA, '$'
+	COLUMNS
+    (
+        LOCATION NVARCHAR(200) PATH '$.office',
+        NAME NVARCHAR(200) PATH '$.name',
+        LEARNS_FROM NVARCHAR(200) PATH '$.learns_from',
+        HINT NVARCHAR(200) PATH '$.hint',
+        OFFICE NVARCHAR(200) PATH '$.office',
+        GEOLOCATION NVARCHAR(200) PATH '$.geolocation',
+        TENURE NVARCHAR(30) PATH '$.tenure'
+    )
+	) AS JT where to_bigint(TENURE) > 1
+	select count(*) from "DEVS";
+  
+select DEVNAME, TO_NVARCHAR(HINT_TEXT) as "testimony", LEARNS_FROM
+from DEVS
+where contains(HINT_TEXT, '%develop%')
+
+#The following statement demonstrates a use of the JSON Object Expression in the select statement. Run this statement to complete the validation below:
+SELECT *
+	FROM JSON_TABLE(COMMUNITY.DATA, '$'
+	COLUMNS
+    (
+        LOCATION NVARCHAR(200) PATH '$.office',
+        NAME NVARCHAR(200) PATH '$.name'
+    )
+	) AS JT where NAME = 'Maria'
+  
+select DEVNAME, TO_NVARCHAR(HINT_TEXT) as "testimony", LEARNS_FROM
+from DEVS
+where contains(HINT_TEXT, '%develop%')
+  
+#Create the columnar table first by returning to the SAP Web IDE editor view and creating a file named DEVS.hdbtable in the db/src folder.
+#Here is the content for this file.
+column table "DEVS"(
+  "DEVNAME" nvarchar(100) PRIMARY KEY,
+  "LEARNS_FROM" nvarchar(100),
+  "HINT_TEXT" nvarchar(1000),
+  "CITY" nvarchar(100),
+  "LON_LAT" nvarchar(200)
+)
+
+#You’ll need to look for people who like to develop applications.
+#You’ll use a contains text search to find out who has said anything related to developing applications.
+select DEVNAME, TO_NVARCHAR(HINT_TEXT) as "testimony", LEARNS_FROM
+from DEVS
+where contains(HINT_TEXT, '%develop%')
